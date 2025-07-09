@@ -1,9 +1,7 @@
 import React from 'react'
 
 const PrivateRoute = ({allowedRoles}) => {
-  return (
-    <div>PrivateRoute</div>
-  )
+  return  <Outlet/>
 }
 
 export default PrivateRoute

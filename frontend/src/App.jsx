@@ -13,6 +13,7 @@ import PrivateRoute from './routes/PrivateRoute'
 import UserDashboard from './pages/User/Dashboard'
 import MyTasks from './pages/User/MyTasks'
 import ViewTaskDetails from './pages/User/ViewTaskDetails'
+import ManageTasks from './pages/Admin/ManageTasks'
 
 const App = () => {
   return (
