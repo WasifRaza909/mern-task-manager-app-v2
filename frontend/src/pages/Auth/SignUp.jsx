@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector'
 import AuthLayout from '../../components/layouts/AuthLayout'
 import { validateEmail } from '../../utils/helper'
 import Input from '../../components/Inputs/Input'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axiosInstance from '../../utils/axiosInstance'
+import { UserContext } from '../../context/userContext'
+import { API_PATHS } from '../../utils/apiPaths'
 
 const SignUp = () => {
   const [profilePic, setProfilePic] = useState(null)
@@ -14,9 +17,13 @@ const SignUp = () => {
 
   const [error,setError] = useState(null)
 
+  const {updateUser} = useContext(UserContext)
+const navigate = useNavigate()
+
   const handleSignUp = async(e) => {
     e.preventDefault()
 
+    let profileImageUrl = ''
 
     if(!fullName){
       setError("Please enter full name.")
@@ -36,6 +43,40 @@ const SignUp = () => {
     setError('')
 
     // SignUp API Call
+    try {
+
+      // Upload image if present
+      if(profilePic){
+        const imgUpdloadRes = await uploadImage(profilePic)
+        profileImageUrl = imgUpdloadRes.imageUrl || ''
+      }
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+        name: fullName,
+        email,
+        password,
+        adminInviteToken
+      })
+
+      const {token, role} = response.data;
+
+      if(token) {
+        localStorage.setItem("token", token)
+        updateUser(response.data)
+
+        if(role === "admin"){
+          navigate('/admin/dashboard')
+        } else{
+          navigate('/user/dashboard')
+        }
+      }
+
+    } catch (error) {
+      if (error.response && error.response.data.message){
+        setError(error.response.data.message)
+      } else {
+        setError("Something went wrong. Please try again.")
+      }
+    }
   }
 
   return (
@@ -76,7 +117,7 @@ const SignUp = () => {
             value={adminInviteToken}
             onChange={({target}) => setAdminInviteToken(target.value)}
             label="Admin Invite Token"
-            placeholder="6 Difit Code"
+            placeholder="6 Digit Code"
             type="text"
           />
             </div>

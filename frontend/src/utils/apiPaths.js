@@ -1,6 +1,6 @@
 export const BASE_URL = "http://localhost:8000"
 
-export const API_CONFIG  = {
+export const API_PATHS  = {
     AUTH: {
         REGISTER: "/api/auth/register", // Register new user (Admin or Member)
         LOGIN: "/api/auth/login", // Authenticate user & return JWT token
