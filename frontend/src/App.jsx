@@ -12,7 +12,7 @@ import Dashboard from './pages/Admin/Dashboard'
 import CreateTask from './pages/Admin/CreateTask'
 import ManageUsers from './pages/Admin/ManageUsers'
 import PrivateRoute from './routes/PrivateRoute'
-import UserDashboard from './pages/User/Dashboard'
+import UserDashboard from './pages/User/UserDashboard'
 import MyTasks from './pages/User/MyTasks'
 import ViewTaskDetails from './pages/User/ViewTaskDetails'
 import ManageTasks from './pages/Admin/ManageTasks'
@@ -21,7 +21,7 @@ import UserProvider, { UserContext } from './context/userContext'
 const App = () => {
   return (
     <UserProvider>
-    <div className='text-3xl text-rose-600'>
+    <div className='text-3xl'>
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -57,7 +57,7 @@ const Root = () => {
   const {user, loading} =  useContext(UserContext)
 
   if(loading) return <Outlet/>
-  console.log(user)
+
   if(!user){
     return <Navigate to="/login"/>
   }
