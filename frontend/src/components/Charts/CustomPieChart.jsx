@@ -7,10 +7,12 @@ import {
     ResponsiveContainer,
     Legend,
 } from 'recharts'
+import CustomTooltip from './CustomTooltip'
+import CustomLegend from './CustomLegend'
 
 const CustomPieChart = ({data, colors}) => {
   return (
-   <ResponsiveContainer>
+   <ResponsiveContainer width="100%" height={350}>
     <PieChart>
         <Pie data={data}
         dataKey="count"
@@ -22,12 +24,17 @@ const CustomPieChart = ({data, colors}) => {
         labelLine={false}
         >
             {
-                data.map((entry, index) => {
-                    <Cell key={`cell=${index}`}
-                     fill={colors[index % colors.length]} />
-                })
-            }
+  data.map((entry, index) => (
+    <Cell
+      key={`cell-${index}`}
+      fill={colors[index % colors.length]}
+    />
+  ))
+}
         </Pie>
+        <Tooltip  content={<CustomTooltip/>} />
+        <Legend content={<CustomLegend/>}
+        />
     </PieChart>
 
    </ResponsiveContainer>
